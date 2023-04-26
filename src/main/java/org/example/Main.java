@@ -31,12 +31,20 @@ public class Main {
         e.setProjects(List.of(one,two));
 
         EmployeeDTO dto = mapper.asDTO(e);
+        dto.setName(null);
 
         System.out.println(dto);
 
         Employee ee = mapper.asEntity(dto);
 
         System.out.println(ee);
+
+        // ignore null from copy
+        Employee test = new Employee();
+        test.setName("abhishek");
+        dto.setName(null);
+        mapper.updateFromNonNullAttrsOfDto(dto,test);
+        System.out.println(test);
 
     }
 }

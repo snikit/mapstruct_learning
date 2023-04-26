@@ -3,11 +3,10 @@ package org.example.mapper;
 import org.example.Employee;
 import org.example.EmployeeDTO;
 import org.example.Project;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
+import org.mapstruct.*;
 
-@Mapper
+@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+, uses = {ProjectMapper.class})
 public interface EmployeeMapper extends GenericMapper<Employee, EmployeeDTO> {
     @Override
     @Mappings({
@@ -24,13 +23,10 @@ public interface EmployeeMapper extends GenericMapper<Employee, EmployeeDTO> {
     })
     EmployeeDTO asDTO(Employee e);
 
-    default Project mapProjectId(int id) {
-        Project project = new Project();
-        project.setId(id);
-        return project;
-    }
 
-    default int mapProject(Project project) {
-        return project.getId();
-    }
+
+   @InheritInverseConfiguration
+    public void updateFromNonNullAttrsOfDto(EmployeeDTO source,@MappingTarget Employee target);
+
+
 }
